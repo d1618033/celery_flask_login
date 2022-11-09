@@ -23,7 +23,8 @@ from celery_flask_login import current_user
 from celery import Celery
 
 celery_app = Celery(__name__)
-celery_flask_login.setup(User)
+# use the same user_loader you used for flask_login
+celery_flask_login.setup(user_loader)
 
 @celery_app.task
 def task_debug(*args, **kwargs):

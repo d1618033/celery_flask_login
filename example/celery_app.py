@@ -18,11 +18,11 @@ flask_app.config["SECRET_KEY"] = "secret!"
 login_manager = LoginManager()
 login_manager.init_app(flask_app)
 
+
 @login_manager.user_loader
 @dataclass
 class User(UserMixin):
     id: str
-
 
 
 # celery code:
@@ -40,7 +40,6 @@ def task_debug(*args, **kwargs):
 @celery_app.task
 def inner_task(*args, **kwargs):
     logger.info(f"INNER: User {current_user} ran task with {args} and {kwargs}")
-
 
 
 @flask_app.route("/")

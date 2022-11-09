@@ -9,8 +9,11 @@ python = "^3.9"
 celery = "^5.2.7"
 Flask = "^2.2.2"
 Flask-Login = "^0.6.2"
+pytest = "^7.2.0"
 
 [tool.poetry.dev-dependencies]
+celery = {extras = ["pytest"], version = "^5.2.7"}
+black = "^22.10.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
