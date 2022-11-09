@@ -93,17 +93,19 @@ def test_nested_task(celery_app, celery_worker, flask_app, flask_client, login_m
             result = None
         return jsonify({"status": task.status, "result": result})
 
-    task_id = flask_client.get("/").json["task_id"]
-    while (
-        task_status := flask_client.get(f"/tasks/{task_id}").json["status"]
-    ) == "PENDING":
-        time.sleep(1)
-    task_id = flask_client.get(f"/tasks/{task_id}").json["result"]["inner_task_id"]
-    while (
-        task_status := flask_client.get(f"/tasks/{task_id}").json["status"]
-    ) == "PENDING":
-        time.sleep(1)
-    assert flask_client.get(f"/tasks/{task_id}").json == {
+    def _poll(task_id):
+        for _ in range(100):
+            task = flask_client.get(f"/tasks/{task_id}").json
+            if task["status"] != "PENDING":
+                return task
+            time.sleep(1)
+        raise TimeoutError(f"Timed out for task {task_id}")
+
+
+    outer_task_id = flask_client.get("/").json["task_id"]
+    inner_task_id = _poll(outer_task_id)["result"]["inner_task_id"]
+    inner_task = _poll(inner_task_id)
+    assert inner_task == {
         "status": "SUCCESS",
         "result": {"x": 1, "user_id": "dave"},
     }
