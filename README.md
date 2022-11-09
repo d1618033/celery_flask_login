@@ -21,10 +21,17 @@ This package assumes you use flask and celery and flask_login for authentication
 import celery_flask_login
 from celery_flask_login import current_user
 from celery import Celery
+from flask import Flask
+from flask_login import LoginManager
 
+flask_app = Flask(__name__)
+login_manager = LoginManager()
+login_manager.user_loader(...)  # you need to define this
+login_manager.init_app(flask_app)
 celery_app = Celery(__name__)
-# use the same user_loader you used for flask_login
-celery_flask_login.setup(user_loader)
+
+# this is basically what you need to add
+celery_flask_login.setup(flask_app)
 
 @celery_app.task
 def task_debug(*args, **kwargs):

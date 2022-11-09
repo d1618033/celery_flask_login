@@ -28,7 +28,7 @@ class User(UserMixin):
 # celery code:
 
 celery_app = Celery(__name__)
-celery_flask_login.setup(User)
+celery_flask_login.setup(flask_app)
 
 
 @celery_app.task

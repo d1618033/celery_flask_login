@@ -5,7 +5,7 @@ from celery.signals import before_task_publish, task_prerun
 from flask_login import current_user as flask_login_current_user
 
 
-def setup(user_loader_func):
+def setup(flask_app):
     @before_task_publish.connect(weak=False)
     def before_task_publish_handler(sender=None, headers=None, body=None, **kwargs):
         user = current_user
@@ -18,7 +18,7 @@ def setup(user_loader_func):
     @task_prerun.connect(weak=False)
     def task_prerun_handler(task, task_id, args, kwargs, *_args, **_kwargs):
         user_id = task.request.user_id
-        user = user_loader_func(id=user_id)
+        user = flask_app.login_manager.user_callback(id=user_id)
         _cv_current_user.set(user)
 
 

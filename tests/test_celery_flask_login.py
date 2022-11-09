@@ -33,7 +33,7 @@ def flask_client(flask_app):
 
 
 def test_basic_task(celery_app, celery_worker, flask_app, flask_client, login_manager):
-    celery_flask_login.setup(User)
+    celery_flask_login.setup(flask_app)
 
     @celery_app.task
     def echo(x, y, z):
