@@ -5,7 +5,7 @@ For people who like celery and flask and logins
 ## Intro
 
 Ever had that problem where you wanted to know the user that initiated a celery task
-and just couldn't find a way to get that user info without passing it down deeply nested function?
+and just couldn't find a way to get that user info without passing it down a deeply nested function?
 
 Well then this package is for you!
 
@@ -31,4 +31,8 @@ def task_debug(*args, **kwargs):
 ```
 
 That's right, it's just that simple!
+
+
+Only thing to note is that you should be using `current_user` from `celery_flask_login`
+instead of from `flask_login` (it's a proxy to it)
 
