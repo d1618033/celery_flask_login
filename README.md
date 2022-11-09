@@ -24,8 +24,6 @@ pip install celery_flask_login
 
 ```python
 
-import celery_flask_login
-from celery_flask_login import current_user
 from celery import Celery
 from flask import Flask
 from flask_login import LoginManager
@@ -37,7 +35,12 @@ login_manager.init_app(flask_app)
 celery_app = Celery(__name__)
 
 # this is basically what you need to add
+import celery_flask_login
 celery_flask_login.setup(flask_app)
+
+# everywhere in your code where you used `from flask_login import current_user`
+# you should instead use this:
+from celery_flask_login import current_user
 
 @celery_app.task
 def task_debug(*args, **kwargs):
