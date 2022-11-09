@@ -16,6 +16,12 @@ This package assumes you use flask and celery and flask_login for authentication
 
 ## Usage
 
+Install with pip
+
+```
+pip install celery_flask_login
+```
+
 ```python
 
 import celery_flask_login

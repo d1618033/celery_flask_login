@@ -1,3 +1,18 @@
+"""
+Demo app.
+You can run this by running the following commands:
+
+    # in one window:
+    celery -A celery_app:celery_app worker -l INFO
+
+    # in the other window:
+    flask --app celery_app:flask_app run --reload
+
+    # try it out with
+    curl -H "username: dave" localhost:5000
+"""
+
+
 from celery import Celery
 from flask import Flask, request
 from dataclasses import dataclass
